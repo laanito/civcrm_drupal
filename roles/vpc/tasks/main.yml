@@ -1,35 +1,61 @@
 ---
 - name: Creating an AWS VPC inside mentioned Region
-  ec2_vpc:
+  ec2_vpc_net:
+    name: "{{ vpc_name }}-vpc"
     region: "{{ vpc_region }}"
-    state:  present
     cidr_block: "{{ vpc_cidr_block }}"
-    resource_tags: { "Name":"{{ vpc_name }}-vpc", "Environment":"{{ ENVIRONMENT }}" }
-    subnets: "{{ vpc_subnets }}" 
-    internet_gateway: yes
   register: vpc
 
+# Exec Ansible with -vvv to proint debugging
+
+- debug:
+    var: vpc
+    verbosity: 3
+
 - name: Tag the Internet Gateway
-  ec2_tag:
-    resource: "{{ vpc.igw_id }}"
+  ec2_vpc_igw:
+    vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ vpc_region }}"
     state: present
-    tags:
-      Name: "{{ vpc_name }}-igw"
   register: igw
+
+- name: Register subnets
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ vpc.vpc.id }}"
+    cidr: "{{ item.cidr }}"
+    region: "{{ vpc_region }}"
+    resource_tags:
+      Name: "{{ item.resource_tags.Name }}"
+  register: subnets
+  with_items: "{{ vpc_subnets }}"
+
+- debug:
+    var: vpc
+    verbosity: 3
+
+- debug:
+    var: subnets
+    verbosity: 0
+
+- debug:
+    var: "{{ item }}"
+    verbosity: 0
+  with_items: "{{ subnets }}"
 
 - name: Set up Public Subnets Route Table
   ec2_vpc_route_table:
-    vpc_id: "{{ vpc.vpc_id }}"
+    vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ vpc_region }}"
     state: present
     tags:
-      Name: "Public-RT-for-{{ vpc_name }}-vpc"
+      - Name: "Public-RT-for-{{ vpc_name }}-vpc"
     subnets:
-      "{{ vpc.subnets | get_public_subnets_ids('Type','Public') }}"
+      - "{{ item.subnet.id }}"
     routes:
       - dest: 0.0.0.0/0
         gateway_id: "{{ vpc.igw_id }}"
+  with_items: "{{ subnets.results }}"
   register: public_rt
 
 - name: "Create {{ vpc_name }}.yml file inside the secret_vars directory"

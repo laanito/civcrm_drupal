@@ -1,7 +1,7 @@
 ---
 # Variables that can provide as extra vars
 VPC_NAME: test
-VPC_REGION: us-east-1 # N.Virginia
+VPC_REGION: eu-west-2 # London
 VPC_CIDR: "172.25.0.0/16"
 VPC_CLASS_DEFAULT: "172.25"
 
