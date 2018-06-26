@@ -1,4 +1,8 @@
 ---
+- debug:
+   var: rds_sg_subnets
+   verbosity: 3
+
 - name: Create RDS Subnet Group
   rds_subnet_group:
     region: "{{ vpc_region }}"

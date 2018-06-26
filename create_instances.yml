@@ -1,11 +1,11 @@
 ---
 - hosts: localhost
   connection: local
-  gather_facts: no   
+  gather_facts: no
+  vars_files:
+    - secret_vars/secret.yml
   roles:
     - vpc
     - ec2sg
     - ec2key
     - ec2instance
-    - elb
-    - rds

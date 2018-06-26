@@ -1,6 +1,6 @@
 ---
 # Variables that can provide as extra vars
-VPC_REGION: us-east-1 # N.Virginia
+VPC_REGION: eu-west-2 # London
 RDS_SUBNET_GROUP_NAME: "my_test_subnet_group"
 RDS_SG_DESCRIPTION: "My Subnet Group for wordpress rds instance"
 RDS_SG_SUBNETS: []
@@ -18,6 +18,7 @@ RDS_PUBLICLY_ACCESSIBLE: yes
 RDS_WAIT_TIMEOUT: 300
 
 # Use inside the tasks
+vpc_name: "{{ VPC_NAME }}"
 vpc_region: "{{ VPC_REGION }}"
 rds_subnet_group_name: "{{ RDS_SUBNET_GROUP_NAME }}"
 rds_sg_description: "{{ RDS_SG_DESCRIPTION }}"

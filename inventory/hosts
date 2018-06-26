@@ -1,4 +1,6 @@
 [localhost]
 127.0.0.1
 
-[webserver]
+[webservers]
+18.130.102.17
+35.176.103.216

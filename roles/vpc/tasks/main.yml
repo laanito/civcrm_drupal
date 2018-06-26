@@ -24,38 +24,32 @@
     state: present
     vpc_id: "{{ vpc.vpc.id }}"
     cidr: "{{ item.cidr }}"
+    az: "{{ item.az }}"
     region: "{{ vpc_region }}"
     resource_tags:
       Name: "{{ item.resource_tags.Name }}"
-  register: subnets
+      Type: "{{ item.resource_tags.Type }}"
+  register: subnets_tmp
   with_items: "{{ vpc_subnets }}"
 
-- debug:
-    var: vpc
-    verbosity: 3
+- name: gather subnets from result
+  set_fact: subnets="{{ subnets_tmp.results|map(attribute='subnet')|list }}"
 
 - debug:
     var: subnets
-    verbosity: 0
-
-- debug:
-    var: "{{ item }}"
-    verbosity: 0
-  with_items: "{{ subnets }}"
+    verbosity: 3
 
 - name: Set up Public Subnets Route Table
   ec2_vpc_route_table:
     vpc_id: "{{ vpc.vpc.id }}"
     region: "{{ vpc_region }}"
     state: present
-    tags:
-      - Name: "Public-RT-for-{{ vpc_name }}-vpc"
-    subnets:
-      - "{{ item.subnet.id }}"
+    resource_tags:
+      Name: "Public-RT-for-{{ vpc_name }}-vpc"
+    subnets: "{{ subnets | get_public_subnets_ids('Type','Public') }}"
     routes:
       - dest: 0.0.0.0/0
-        gateway_id: "{{ vpc.igw_id }}"
-  with_items: "{{ subnets.results }}"
+        gateway_id: "{{ igw.gateway_id }}"
   register: public_rt
 
 - name: "Create {{ vpc_name }}.yml file inside the secret_vars directory"
@@ -64,21 +58,26 @@
     line: "---"
     create: yes
 
+- debug:
+    var: public_rt
+    verbosity: 0
+
+
 - name: "Write vpc info to {{ vpc_name }}.yml file inside the secret_vars directory"
   lineinfile:
     dest: "secret_vars/{{ vpc_name }}.yml"
     regexp: "^{{ item.regexp | upper }}"
     line: "{{ item.regexp | upper }}: {{ '\"' + item.line + '\"' }}"
   with_items:
-    - { regexp: 'vpc_id', line: '{{ vpc.vpc_id }}' }
-    - { regexp: 'igw', line: '{{ vpc.igw_id }}' }
+    - { regexp: 'vpc_id', line: '{{ vpc.vpc.id }}' }
+    - { regexp: 'igw', line: '{{ igw.gateway_id }}' }
     - { regexp: 'route_table_id', line: '{{ public_rt.route_table.id }}' }
 
 - name: "Write public and private subnets ids to {{ vpc_name }}.yml file inside the secret_vars directory"
   lineinfile:
     dest: "secret_vars/{{ vpc_name }}.yml"
-    regexp: "^{{ item.resource_tags.Alias | upper }}"
-    line: "{{ item.resource_tags.Alias | upper }}: {{ '\"' + item.id + '\"' }}"
-  with_items: "{{ vpc.subnets }}"
-  
+    regexp: "^{{ item.item.resource_tags.Alias | upper }}"
+    line: "{{ item.item.resource_tags.Alias | upper }}: {{ '\"' + item.subnet.id + '\"' }}"
+  loop: "{{ subnets_tmp.results }}"
+
 - include_vars: "secret_vars/{{ vpc_name }}.yml"

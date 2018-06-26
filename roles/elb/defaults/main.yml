@@ -1,6 +1,6 @@
 ---
 # Variables that can provide as extra vars
-VPC_REGION: us-east-1 # N.Virginia
+VPC_REGION: eu-west-2 # London
 ELB_NAME: "test"
 ELB_SUBNET_ID: []
 ELB_PURGE_SUBNETS: no
@@ -23,6 +23,7 @@ ELB_LISTENERS:
     instance_port: 80
 
 # Use inside the tasks
+vpc_name: "{{ VPC_NAME }}"
 vpc_region: "{{ VPC_REGION }}"
 elb_name: "{{ ELB_NAME }}"
 elb_subnet_id: "{{ ELB_SUBNET_ID }}"

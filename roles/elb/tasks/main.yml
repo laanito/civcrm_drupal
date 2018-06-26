@@ -1,4 +1,9 @@
 ---
+
+- debug:
+    var: elb_subnet_id
+    verbosity: 3
+
 - name: Ensure load balancer exists
   ec2_elb_lb:
     name: "{{ elb_name }}"

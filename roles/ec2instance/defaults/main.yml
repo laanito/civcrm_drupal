@@ -4,15 +4,18 @@ VPC_NAME: test
 VPC_REGION: eu-west-2 # London
 EC2_INSTANCE_TYPE: t2.micro
 EC2_KEY_NAME: "compucorp-default-key"
-EC2_SECURITY_GROUP_NAME: "test"
+EC2_SECURITY_GROUP_NAME: "test-sg"
 EC2_COUNT: 1
 EC2_VOLUME_SIZE: 8
-EC2_SUBNET_ID: []
+EC2_SUBNET_ID:
+  - "{{ PUBLIC_SUBNET_1 }}"
+  - "{{ PUBLIC_SUBNET_2 }}"
+
 # Example of EC2_SUBNET_ID
 # EC2_SUBNET_ID:
 #   - "subnet-0c3e0b7b"
 #   - "subnet-bf672ae6"
-AMI_NAME: "ubuntu/images/hvm-instance/ubuntu-bionic-18.04-amd64-server-"
+AMI_NAME: "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"
 AMI_OWNER: "679593333241"
 
 # Tags
