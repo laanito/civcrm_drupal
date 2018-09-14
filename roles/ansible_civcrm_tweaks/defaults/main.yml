@@ -1,0 +1,3 @@
+---
+destination_dir: /var/www/html
+extensions_subdir: sites/default/extensions

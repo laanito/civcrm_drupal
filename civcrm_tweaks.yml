@@ -1,0 +1,7 @@
+---
+- hosts: webservers
+  user: ansrunner
+  become: yes
+  gather_facts: no
+  roles:
+    - ansible_civcrm_tweaks

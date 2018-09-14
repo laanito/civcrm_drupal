@@ -1,0 +1,11 @@
+---
+# default values
+mysql_packages:
+ - 'python-mysqldb'
+ - 'mysql-client'
+db_host: "{{ RDS_ENDPOINT }}"
+db_user: "{{ RDS_DB_USERNAME }}"
+db_pass: "{{ RDS_DB_PASSWORD }}"
+encoding: 'utf8mb4'
+drupal_db: 'drupal'
+civicrm_db: 'civicrm'

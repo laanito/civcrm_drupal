@@ -1,0 +1,13 @@
+---
+- name: Enable core modules
+  shell: >
+    drush pm-enable --resolve-dependencies --yes ctools views views_ui
+  args:
+    chdir: "{{ destination_dir }}/drupal"
+
+- name: Enable backup_migrate devel
+  shell: >
+    drush pm-enable  --resolve-dependencies --yes backup_migrate devel
+  args:
+    chdir: "{{ destination_dir }}/drupal"
+    creates: "{{ destination_dir }}/drupal/sites/all/modules/backup_migrate"

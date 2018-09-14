@@ -1,0 +1,5 @@
+---
+source_host: "{{ groups['webservers'][0] }}"
+source_path: '/var/www/html/drupal'
+destination_path: '/var/www/html/drupal'
+temporary_path: 'backup/'

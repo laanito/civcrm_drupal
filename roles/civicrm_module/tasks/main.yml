@@ -1,0 +1,26 @@
+---
+- name: Download civicrm-module
+  get_url:
+    url: "{{ civicrm_tarfile }}"
+    dest: '~/civcrm.tar.gz'
+
+- name: Download civcrm drush command module
+  get_url:
+    url: "{{ drush_src_url }}"
+    dest: '~/.drush/civicrm.drush.inc'
+
+- name: Refresh Drush
+  shell: >
+    drush cc drush
+  args:
+    chdir: "{{ destination_dir }}/drupal"
+
+- name: Install Module
+  shell: >
+    drush civicrm-install --dbhost="{{ db_host }}"
+    --dbname="{{ civicrm_db }}" --dbuser="{{ db_user }}"
+    --dbpass="{{ db_pass }}" --tarfile='~/civcrm.tar.gz'
+    --site_url="{{ PUBLIC_URL }}" --destination=sites/all/modules
+  args:
+    chdir: "{{ destination_dir }}/drupal"
+    creates: "{{ destination_dir }}/drupal/sites/all/modules/civicrm"

@@ -1,0 +1,22 @@
+---
+- name: Install MySQL Client package
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ mysql_packages }}"
+- name: Create Drupal Database
+  mysql_db:
+    login_host: "{{ db_host }}"
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+    encoding: "{{ encoding }}"
+    name: "{{ drupal_db }}"
+
+- name: Create Civicrm Database
+  mysql_db:
+    login_host: "{{ db_host }}"
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_pass }}"
+    encoding: "{{ encoding }}"
+    name: "{{ civicrm_db }}"

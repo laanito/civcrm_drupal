@@ -1,0 +1,33 @@
+---
+- name: enable rsyncd
+  lineinfile:
+    dest: /etc/default/rsync
+    regexp: '^RSYNC_ENABLE=false$'
+    line: 'RSYNC_ENABLE=true'
+    backrefs: yes
+
+- name: copy configuration
+  template:
+    src: templates/rsyncd.conf.j2
+    dest: /etc/rsyncd.conf
+  register: rsync_config
+
+- service: name='rsync' state=restarted
+  when: rsync_config.changed
+
+- name: Synchronize from master to local.
+  synchronize:
+    mode: pull
+    dest: "{{ temporary_path }}"
+    src: "{{ source_path }}"
+    recursive: yes
+    rsync_opts: '-e ssh'
+  when: inventory_hostname == source_host
+
+- name: Synchronize from master to local.
+  synchronize:
+    src: "{{ temporary_path }}"
+    dest: "{{ destination_path }}"
+    recursive: yes
+    rsync_opts: '-e ssh'
+  when: inventory_hostname != source_host

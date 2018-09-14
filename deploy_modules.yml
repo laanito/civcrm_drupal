@@ -1,0 +1,11 @@
+---
+# this only needs to be run in one server
+- hosts: webservers[0]
+  user: ansrunner
+  become: yes
+  gather_facts: no
+  vars_files:
+    - secret_vars/secret.yml
+    - secret_vars/{{ VPC_NAME }}.yml
+  roles:
+    - ansible_drupal_modules

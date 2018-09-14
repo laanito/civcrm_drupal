@@ -1,0 +1,51 @@
+---
+- name: Create target Directory
+  file:
+    path: "{{ destination_dir }}"
+    state: directory
+
+- stat: path="{{ destination_dir }}/drupal"
+  register: drupal_downloaded
+
+- name: Download Drupal code
+  command: >
+    drush dl drupal-7 --destination="{{ destination_dir }}"
+    --drupal-project-rename
+  args:
+    creates: "{{ destination_dir }}/drupal"
+  when: drupal_downloaded.stat.exists == false
+
+- name: Site Install with Drush
+  command: >
+    drush si standard --account-name="{{ drupal_user }}" --account-pass="{{ drupal_pass }}"
+    --db-url=mysql://"{{ db_user }}":"{{ db_pass }}"@"{{ db_host }}":3306/"{{ drupal_db }}"
+    -r "{{ destination_dir }}/drupal" -y
+  args:
+    chdir: "{{ destination_dir }}/drupal"
+    creates: "{{ destination_dir }}/drupal/sites/default/settings.php"
+
+- name: Create private folder
+  file:
+    path: "{{ destination_dir }}/drupal/sites/default/private"
+    state: directory
+    owner: www-data
+    group: www-data
+    recurse: yes
+    mode: 0755
+
+- name: Fix files folder permission
+  file:
+    path: "{{ destination_dir }}/drupal/sites/default/files"
+    state: directory
+    owner: www-data
+    group: www-data
+    recurse: yes
+    mode: 0755
+
+- name: Fix settings permission
+  file:
+    path: "{{ destination_dir }}/drupal/sites/default/settings.php"
+    state: file
+    owner: www-data
+    group: www-data
+    mode: 0644

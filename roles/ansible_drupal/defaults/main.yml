@@ -1,0 +1,9 @@
+---
+db_host: "{{ RDS_ENDPOINT }}"
+db_user: "{{ RDS_DB_USERNAME }}"
+db_pass: "{{ RDS_DB_PASSWORD }}"
+encoding: 'utf8mb4'
+drupal_db: 'drupal'
+destination_dir: '/var/www/html/'
+drupal_user: "{{ DRUPAL_USER }}"
+drupal_pass: "{{ DRUPAL_PASS }}"

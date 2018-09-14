@@ -1,0 +1,7 @@
+---
+- hosts: webservers
+  user: ansrunner
+  become: yes
+  gather_facts: yes
+  roles:
+    - ansible_php

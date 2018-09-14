@@ -1,0 +1,11 @@
+---
+drush_src_url: 'https://raw.githubusercontent.com/civicrm/civicrm-drupal/7.x-4.6/drush/civicrm.drush.inc'
+civicrm_tarfile: 'https://download.civicrm.org/civicrm-4.6.37-drupal.tar.gz'
+db_host: "{{ RDS_ENDPOINT }}"
+db_user: "{{ RDS_DB_USERNAME }}"
+db_pass: "{{ RDS_DB_PASSWORD }}"
+encoding: 'utf8mb4'
+civicrm_db: 'civicrm'
+destination_dir: '/var/www/html'
+drupal_user: "{{ DRUPAL_USER }}"
+drupal_pass: "{{ DRUPAL_PASS }}"

@@ -1,0 +1,16 @@
+---
+- hosts: webservers
+  user: ansrunner
+  become: yes
+  gather_facts: yes
+  vars_files:
+    - secret_vars/secret.yml
+    - secret_vars/{{ VPC_NAME }}.yml
+  roles:
+  - role: nginx-drupal
+    nginx_drupal_sites:
+      - file_name: civicrm
+        root: /var/www/html/drupal
+        http:
+          port: 80
+        server_name: "{{ PUBLIC_URL }}"

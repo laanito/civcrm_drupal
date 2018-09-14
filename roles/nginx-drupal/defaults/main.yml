@@ -1,0 +1,49 @@
+---
+# defaults file for nginx-drupal
+nginx_drupal_git:
+  repo: "https://github.com/perusio/drupal-with-nginx.git"
+  version: "D7"
+
+nginx_drupal_config_path: "/etc/nginx"
+nginx_drupal_log_path: "/var/log/nginx"
+nginx_drupal_php_handling: "php-fpm"
+nginx_drupal_escape_uri: false
+nginx_drupal_use_boost: false
+nginx_drupal_use_drush: true
+nginx_drupal_allow_install: false
+nginx_drupal_use_spdy: false
+nginx_drupal_php_fpm_status_allowed_hosts: ["127.0.0.1", "{{ VPC_CIDR }}"]
+nginx_drupal_nginx_status_allowed_hosts: ["127.0.0.1", "{{ VPC_CIDR }}"]
+nginx_drupal_hotlinking_protection: false
+nginx_drupal_admin_basic_auth: false
+nginx_drupal_microcache: true
+nginx_drupal_microcache_auth: false
+nginx_drupal_upload_progress: false
+nginx_drupal_aio: false
+nginx_drupal_flv_streaming: false
+nginx_drupal_mp4_streaming: false
+nginx_drupal_http_core:
+  client_max_body_size: "10m"
+  ssl_session_cache: true
+nginx_drupal_ssl_protocols: [ "SSLv3", "TLSv1", "TLSv1.1", "TLSv1.2" ]
+nginx_drupal_ssl_ecdh_curve: "secp521r1" 
+nginx_drupal_ssl_ciphers: "ECDH+aRSA+AESGCM:ECDH+aRSA+SHA384:ECDH+aRSA+SHA256:ECDH:EDH+CAMELLIA:EDH+aRSA:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED:!ECDSA:CAMELLIA256-SHA:AES256-SHA:CAMELLIA128-SHA:AES128-SHA"
+nginx_drupal_upstream_servers: ["127.0.0.1:9000"]
+nginx_drupal_upstream_backup_servers: []
+nginx_drupal_sites: none
+nginx_drupal_http_pre_includes: []
+nginx_drupal_http_post_includes: []
+nginx_drupal_language_path_prefixes: []
+nginx_drupal_x_frame_options: ALLOW
+nginx_drupal_remote_addr_conn_limit: 5
+nginx_drupal_remote_addr_conn_limit_zone: per_fastly_client_ip
+nginx_drupal_remote_addr_http_req_limit_avg: 5
+nginx_drupal_remote_addr_http_req_limit_burst: 5
+nginx_drupal_remote_addr_http_req_limit_period: 10m
+nginx_drupal_remote_addr_http_req_limit_zone: perip
+nginx_drupal_remote_addr_http_req_limit_delay: nodelay
+nginx_drupal_server_name_http_req_limit_avg: 40
+nginx_drupal_server_name_http_req_limit_burst: 60
+nginx_drupal_server_name_http_req_limit_period: 10m
+nginx_drupal_server_name_http_req_limit_zone: perserver
+nginx_drupal_server_name_http_req_limit_delay:
