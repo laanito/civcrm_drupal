@@ -1,0 +1,41 @@
+---
+# Run all tasks
+# First Create AWS instances
+- import_playbook: create_instances.yml
+# Prepara new created instances to be operated with Ansible
+- import_playbook: prepare_servers.yml
+# Deploy Nginx on new created servers
+- import_playbook: deploy_nginx.yml
+# Create Elastic Load Balancer and RDS instance
+- import_playbook: create_elb_rds.yml
+# Deploy php packages in servers
+- import_playbook: deploy_php.yml
+# Install Git
+- import_playbook: deploy_git.yml
+# Install Drush
+- import_playbook: deploy_drush.yml
+# Create Target Databases
+- import_playbook: deploy_databases.yml
+#Install Drupal on first server
+- import_playbook: deploy_drupal.yml
+#Install Drupal modules
+- import_playbook: deploy_modules.yml
+#Configure Nginx for new installed server
+- import_playbook: configure_nginx.yml
+#Install CiviCRM on first server
+- import_playbook: deploy_civicrm.yml
+# Sync first server with all the rest in case of several servers are spawned
+#- import_playbook: sync_servers.yml
+# Last tweaks
+- import_playbook: civcrm_tweaks.yml
+
+# Add Letsencrypt certificate in localhost
+#- import_playbook: deploy_letsencrypt.yml
+
+# Add file verification for certificate
+
+# Verify certificate on server
+
+# Upload certificate to IAM
+
+# Update ELB

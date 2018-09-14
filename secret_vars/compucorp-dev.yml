@@ -1,0 +1,10 @@
+---
+VPC_ID: "vpc-0141cf9ecc9800956"
+IGW: "igw-0fb3d28c3a1c53d72"
+ROUTE_TABLE_ID: "rtb-0faabd29770c82bc0"
+PUBLIC_SUBNET_1: "subnet-0dcd6745c5a6cbca6"
+PUBLIC_SUBNET_2: "subnet-0b68baf0c4c51dd90"
+PRIVATE_SUBNET_1: "subnet-03cb083c1041cedbb"
+PRIVATE_SUBNET_2: "subnet-0be9ca08ec259bb3c"
+ELB_URL: "compucorp-dev-web-elb-1555680659.eu-west-2.elb.amazonaws.com"
+RDS_ENDPOINT: "compucorp-dev-rds.cqgtdrxf6jvl.eu-west-2.rds.amazonaws.com"

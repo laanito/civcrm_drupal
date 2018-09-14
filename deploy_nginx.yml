@@ -1,0 +1,10 @@
+---
+- hosts: webservers
+  user: ansrunner
+  become: yes
+  gather_facts: yes
+  vars_files:
+    - secret_vars/secret.yml
+    - secret_vars/{{ VPC_NAME }}.yml
+  roles:
+    - nginx

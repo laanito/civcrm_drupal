@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - secret_vars/secret.yml
+    - secret_vars/{{ vpc_name }}.yml
+  roles:
+    - elb
+    - rds

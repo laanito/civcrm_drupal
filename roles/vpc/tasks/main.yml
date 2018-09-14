@@ -60,7 +60,7 @@
 
 - debug:
     var: public_rt
-    verbosity: 0
+    verbosity: 3
 
 
 - name: "Write vpc info to {{ vpc_name }}.yml file inside the secret_vars directory"
